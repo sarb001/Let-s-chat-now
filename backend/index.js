@@ -20,7 +20,13 @@ app.use(cors());
 
 io.on('connection' , (socket) => {
     console.log('Connection created =',socket.id);
-    io.emit('wel' , 'Sent from  Backend')
+    
+     socket.emit('wel' , 'Welcome from  Backend')
+     socket.on('message' , (message) => {
+            console.log('message =',message);
+     })
+
+     socket.broadcast.emit('wel' , `Backend ${socket.id} joined the room`);
 })
 
 
