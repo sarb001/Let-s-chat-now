@@ -20,7 +20,10 @@ app.use(cors());
 
 io.on('connection' , (socket) => {
     console.log('Connection created =',socket.id);
+    io.emit('wel' , 'Sent from  Backend')
 })
+
+
 
 const PORT = 3000;
 
