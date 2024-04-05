@@ -23,8 +23,18 @@ io.on('connection' , (socket) => {
     
      socket.emit('wel' , 'Welcome from  Backend')
      socket.on('message' , (message) => {
-            console.log('message =',message);
+
+            // recieve from frontend shown to all circuit 
+            // io.emit('recieve',message)
+
+            //( build like group chat show to all except client )
+            socket.broadcast.emit('recieve',message)
      })
+
+     socket.on('disconnect' , () => {
+        console.log('User disconnect',socket.id);
+     })
+
 
      socket.broadcast.emit('wel' , `Backend ${socket.id} joined the room`);
 })
