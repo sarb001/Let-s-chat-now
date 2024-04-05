@@ -36,13 +36,11 @@ io.on('connection' , (socket) => {
      socket.on('message' , ({msg,roomid}) => {
         console.log('msg/room=', {msg,roomid});
         io.to(roomid).emit('recieve',msg);
-
- })
+    })
 
      socket.on('disconnect' , () => {
         console.log('User disconnect',socket.id);
      })
-
 
      socket.broadcast.emit('wel' , `Backend ${socket.id} joined the room`);
 })

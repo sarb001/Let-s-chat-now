@@ -8,11 +8,13 @@ function App() {
 
   const[msg,setmsg]= useState('');
   const[roomid,setroomid] = useState('');
+  const[socketid,setsocketid] = useState(roomid);
 
   useEffect(() => {
 
      socket.on('connect', () => {
       console.log(`Frontend Connected `,socket.id);
+      setsocketid(socket.id);
      });
 
      socket.on('wel' ,(msg) => {
@@ -44,7 +46,8 @@ function App() {
   return (
    <>
      <div>
-      <h3> Room is =  {roomid && roomid} </h3>
+      <h3> Room is =  {socketid} </h3>
+
       <form onSubmit={handledata}>
         <div>
           <label>  Enter Message </label>
