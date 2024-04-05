@@ -42,6 +42,11 @@ io.on('connection' , (socket) => {
         console.log('User disconnect',socket.id);
      })
 
+     socket.on('joinroom' , (room) => {
+        socket.join(room);
+        console.log(`User joined room ${room} broo`);
+     })
+
      socket.broadcast.emit('wel' , `Backend ${socket.id} joined the room`);
 })
 

@@ -9,6 +9,9 @@ function App() {
   const[msg,setmsg]= useState('');
   const[roomid,setroomid] = useState('');
   const[socketid,setsocketid] = useState(roomid);
+  const[joinroom,setjoinroom] = useState('');
+
+  const[showmsgs,setshowmsgs] = useState([]);
 
   useEffect(() => {
 
@@ -24,6 +27,7 @@ function App() {
      // sent from  frontend show in console
      socket.on('recieve' , (data) => {
        console.log('data',data);
+       setshowmsgs((message) => [...message ,data]);
      })
 
      return () => {
@@ -38,15 +42,30 @@ function App() {
     //  socket.emit('message',msg); // for message only
 
      socket.emit('message',{msg,roomid}); // for message only
-
      setmsg('');
      setroomid('');
   }
+
+  const joinroomhandler = (e) => {
+    e.preventDefault();
+    setjoinroom(joinroom);
+    socket.emit('joinroom',joinroom);
+    setjoinroom('');
+  }
+
 
   return (
    <>
      <div>
       <h3> Room is =  {socketid} </h3>
+
+      <form onSubmit={joinroomhandler} >
+         <label> Enter  RoomName </label>
+         <input type='text' placeholder='Enter Roomname' value= {joinroom} 
+         onChange={(e) => setjoinroom(e.target.value)}
+         />
+         <button type = 'submit'> Join Room </button>
+      </form>
 
       <form onSubmit={handledata}>
         <div>
@@ -63,6 +82,15 @@ function App() {
 
         <button type='submit'> Send </button>
        </form>
+
+      <div>
+        <h2> All Messages </h2>
+        {showmsgs && showmsgs?.map((i) => 
+          <div key = {i}>
+          <h3> {i} </h3> 
+          </div>
+        )}
+      </div>
 
      </div>
    </>
