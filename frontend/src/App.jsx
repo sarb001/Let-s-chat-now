@@ -7,12 +7,14 @@ function App() {
   const socket =   useMemo(() =>  io("http://localhost:3000") ,[]);
 
   const[msg,setmsg]= useState('');
-
+  const[roomid,setroomid] = useState('');
 
   useEffect(() => {
+
      socket.on('connect', () => {
       console.log(`Frontend Connected `,socket.id);
      });
+
      socket.on('wel' ,(msg) => {
        console.log('Frontend msg =',msg);
      })
@@ -31,20 +33,34 @@ function App() {
 
   const handledata = (e) => {
      e.preventDefault();
-     socket.emit('message',msg);
+    //  socket.emit('message',msg); // for message only
+
+     socket.emit('message',{msg,roomid}); // for message only
+
      setmsg('');
+     setroomid('');
   }
 
   return (
    <>
      <div>
-      <label>  welcome to socket.io  </label>
-      <input  type = "text" placeholder='Enter data...' 
-       value = {msg}  onChange={(e) => setmsg(e.target.value)} />
-       <button type='submit' onClick={handledata}> Send </button>
-     </div>
-     <div>
-       <span> Messages </span>
+      <h3> Room is =  {roomid && roomid} </h3>
+      <form onSubmit={handledata}>
+        <div>
+          <label>  Enter Message </label>
+          <input  type = "text" placeholder='Enter data...' 
+          value = {msg}  onChange={(e) => setmsg(e.target.value)} />
+        </div>
+
+        <div>
+          <label> Enter Room No. </label>
+          <input  type = "text" placeholder='Enter Room Id...' 
+          value = {roomid}  onChange={(e) => setroomid(e.target.value)} />
+        </div>
+
+        <button type='submit'> Send </button>
+       </form>
+
      </div>
    </>
   )

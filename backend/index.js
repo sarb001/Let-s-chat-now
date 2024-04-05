@@ -22,14 +22,22 @@ io.on('connection' , (socket) => {
     console.log('Connection created =',socket.id);
     
      socket.emit('wel' , 'Welcome from  Backend')
-     socket.on('message' , (message) => {
+    //  socket.on('message' , (message) => {
 
-            // recieve from frontend shown to all circuit 
-            // io.emit('recieve',message)
+    //         // recieve from frontend shown to all circuit 
+    //         // io.emit('recieve',message)
 
-            //( build like group chat show to all except client )
-            socket.broadcast.emit('recieve',message)
-     })
+    //         //( build like group chat show to all except client )
+    //         // socket.broadcast.emit('recieve',message)
+
+    //  })
+
+    // for more than 1  data from frontend
+     socket.on('message' , ({msg,roomid}) => {
+        console.log('msg/room=', {msg,roomid});
+        io.to(roomid).emit('recieve',msg);
+
+ })
 
      socket.on('disconnect' , () => {
         console.log('User disconnect',socket.id);
